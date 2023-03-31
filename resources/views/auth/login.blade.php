@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="css/style.css">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Login</title>
 <body>
 <div class="content">
@@ -27,26 +28,27 @@
                             <h3>Inicio de Sesión</h3>
                             <p class="mb-4">Bienvenido, ingresa tus credenciales.</p>
                         </div>
-                        <form method="POST" action="{{ route('login') }}">
+                        <form id="form-login" method="POST" action="{{ route('login.verify') }}">
                             @csrf
-                            <div class="form-group first">
-                                <label>Correo Electrónico</label>
-                                <input type="text" class="form-control"  name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <label>Correo Electrónico</label>
+                            <div class="form-group last mb-3">
+                                <input type="text" class="form-control"  id="email" name="email" value="{{ old('email') }}" required  autofocus>
                             </div>
-                            <div class="form-group last mb-4">
-                                <label for="password">Contraseña</label>
-                                <input type="password" class="form-control" name="password" required autocomplete="current-password">
+                            <label>Contraseña</label>
+                            <div class="form-group last mb-3">
+                                <input type="password" class="form-control" id="password" name="password" value="{{ old('password') }}" required>
                             </div>
-                            <div class="d-flex mb-5 align-items-center">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        Recordar
-                                    </label>
-                                </div>
+                            <label hidden="hidden" id="label-code">Código de Seguiridad</label>
+                            <div class="form-group last mb-3" hidden="hidden" id="div-code">
+                                <input type="number" class="form-control" id="code" name="code" required autocomplete="current-code">
                             </div>
-                            <input type="submit" value="Iniciar Sesión" class="btn btn-block btn-primary">
+                            <button type="button" id="btn-login" onclick="login()" class="btn btn-block btn-primary">
+                                Iniciar Sesión
+                                <span class="spinner-border spinner-border-sm" id="loader" role="status" hidden="hidden"></span>
+                            </button>
+                            <button hidden="hidden" type="button" id="btn-access" onclick="access()" class="btn btn-block btn-primary">
+                                Ingresar
+                            </button>
                             @if (Route::has('password.request'))
                                 <a class="btn btn-link" href="{{ route('password.request') }}">
                                     ¿Olvidaste tu contraseña?
@@ -59,26 +61,93 @@
         </div>
     </div>
 </div>
-@error('email')
 <script>
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
-        timer: 3000,
+        timer: 5000,
         timerProgressBar: true,
         didOpen: (toast) => {
             toast.addEventListener('mouseenter', Swal.stopTimer)
             toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
     })
-
-    Toast.fire({
-        icon: 'error',
-        title: 'Credenciales incorrectas'
-    })
 </script>
-@enderror
+@if (session()->has('error'))
+    <script>
+        Toast.fire({
+            icon: 'error',
+            title: '{{ session('error') }}'
+        })
+    </script>
+@endif
+<script>
+    let btnLogin = document.getElementById('btn-login')
+    let btnAccess = document.getElementById('btn-access')
+    let divCode = document.getElementById('div-code')
+    let labelCode = document.getElementById('label-code')
+    let email = document.getElementById('email')
+    let password = document.getElementById('password')
+    let code = document.getElementById('code')
+    let loader = document.getElementById('loader')
+
+    function login() {
+        code.value = ''
+        loader.hidden = false
+        btnLogin.disabled = true
+        axios.post('/login', {
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value
+        }).then(function (response) {
+            btnLogin.hidden = true
+            btnAccess.hidden = false
+            divCode.hidden = false
+            labelCode.hidden = false
+            loader.hidden = true
+            email.addEventListener('keydown', function(e) {
+                e.preventDefault();
+            });
+            password.addEventListener('keydown', function(e) {
+                e.preventDefault();
+            });
+            Swal.fire({
+                icon: 'info',
+                title: 'Verifica tu identidad',
+                text: response.data.message,
+            })
+        }).catch(function (error) {
+            loader.hidden = true
+            btnLogin.disabled = false
+            Toast.fire({
+                icon: 'error',
+                title: error.response.data.message
+            })
+        });
+    }
+
+    function access() {
+        axios.post('/search-user', {
+            email: email.value,
+            password: password.value,
+            code: code.value,
+        }).then(function () {
+            Toast.fire({
+                icon: 'success',
+                title: 'Iniciando sesión...'
+            })
+            setTimeout(function() {
+                document.getElementById('form-login').submit()
+            }, 2000);
+        }).catch(function (error) {
+            Toast.fire({
+                icon: 'error',
+                title: error.response.data.message
+            })
+        });
+    }
+
+</script>
 <script src="https://preview.colorlib.com/theme/bootstrap/login-form-07/js/jquery-3.3.1.min.js"></script>
 <script src="https://preview.colorlib.com/theme/bootstrap/login-form-07/js/popper.min.js"></script>
 <script src="https://preview.colorlib.com/theme/bootstrap/login-form-07/js/bootstrap.min.js"></script>
