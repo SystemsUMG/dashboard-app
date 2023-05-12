@@ -13,9 +13,8 @@ class UserController extends Controller
     }
 
     public function list() {
-        $users = User::all();
+        $users = User::on($this->connection())->get();
         $data = [];
-        //dd($users);
         foreach ($users as $user) {
             $data[] = [
                 'id' => $user->id,

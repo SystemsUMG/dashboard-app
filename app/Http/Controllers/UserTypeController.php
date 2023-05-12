@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\UserType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class UserTypeController extends Controller
 {
@@ -15,7 +16,7 @@ class UserTypeController extends Controller
 
     public function user_types()
     {
-        $types = UserType::all();
+        $types = UserType::on($this->connection())->get();
         $data = [];
         foreach ($types as $type)
         {
@@ -36,20 +37,22 @@ class UserTypeController extends Controller
             'description' => ['required', 'string'],
             'active' => ['required', 'int'],
         ]);
-        UserType::create($request->all());
+        UserType::on($this->connection())->create($request->all());
         return back()->with('success', 'Registro creado.');
     }
 
     public function show($id)
     {
-        $type = UserType::find($id);
-        return response()->json($type);
+        $type = new UserType();
+        $type->setConnection($this->connection());
+        $result = $type->find($id);
+        return response()->json($result);
     }
 
 
     public function update(Request $request, $id)
     {
-        $type = UserType::find($id);
+        $type = UserType::on($this->connection())->find($id);
         $type->update($request->all());
         return back()->with('success', 'Se ha actualizado el registro.');
     }
@@ -57,8 +60,10 @@ class UserTypeController extends Controller
     public function destroy($id)
     {
         try {
-            $type = UserType::find($id);
-            $type->delete();
+            $type = new UserType();
+            $type->setConnection($this->connection());
+            $result = $type->find($id);
+            $result->delete();
             return response()->json(['message' => 'Se ha eliminado el registro']);
         } catch (\Exception) {
             return response()->json(['message' => 'Error: este registro es necesario en el sistema.'], 500);

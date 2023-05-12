@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Session;
 
 class Controller extends BaseController
 {
@@ -20,10 +21,15 @@ class Controller extends BaseController
         $this->status_code = 400;
         $this->response = [];
     }
+
     public $status = [
         0 => '<span title="No puede acceder al sistema" class="badge bg-danger hover">Inactivo</span>',
         1 => '<span title="Habilitado en el sistema" class="badge bg-success hover">Activo</span>'
     ];
 
-
+    public function connection()
+    {
+        $connection = Session::get('connection');
+        return $connection ?? 'mysql';
+    }
 }
