@@ -43,10 +43,8 @@ class UserTypeController extends Controller
 
     public function show($id)
     {
-        $type = new UserType();
-        $type->setConnection($this->connection());
-        $result = $type->find($id);
-        return response()->json($result);
+        $type = UserType::on($this->connection())->find($id);
+        return response()->json($type);
     }
 
 
@@ -60,10 +58,8 @@ class UserTypeController extends Controller
     public function destroy($id)
     {
         try {
-            $type = new UserType();
-            $type->setConnection($this->connection());
-            $result = $type->find($id);
-            $result->delete();
+            $type = UserType::on($this->connection())->find($id);
+            $type->delete();
             return response()->json(['message' => 'Se ha eliminado el registro']);
         } catch (\Exception) {
             return response()->json(['message' => 'Error: este registro es necesario en el sistema.'], 500);

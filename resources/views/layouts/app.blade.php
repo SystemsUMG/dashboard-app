@@ -132,12 +132,11 @@
             </a>
         </li><!-- End Profile Page Nav -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ route('departments.index') }}">
-                <i class="fa-solid fa-location-dot"></i>
-                <span>Departamentos</span>
+            <a class="nav-link collapsed" href="{{ route('voters.index') }}">
+                <i class="fa-solid fa-users-line"></i>
+                <span>Votantes</span>
             </a>
-        </li>
-
+        </li><!-- End Profile Page Nav -->
     </ul>
 
 </aside><!-- End Sidebar-->
