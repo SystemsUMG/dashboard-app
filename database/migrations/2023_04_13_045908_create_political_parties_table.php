@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('color');
             $table->string('image');
-            $table->boolean('active');
+            $table->integer('active');
             $table->timestamps();
         });
     }
