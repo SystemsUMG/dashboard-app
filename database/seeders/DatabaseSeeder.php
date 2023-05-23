@@ -483,5 +483,7 @@ class DatabaseSeeder extends Seeder
             }
 
         }
+
+        \App\Models\Voter::factory(30)->create();
     }
 }

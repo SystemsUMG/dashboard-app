@@ -45,7 +45,7 @@ class LoginController extends Controller
             if (Auth::attempt(['email' => $request->email, 'password' => $request->password], true)) {
                 $user->remember_token = Str::random(15);
                 $user->save();
-                return redirect()->route('home');
+                return redirect()->route('main.index');
             } else {
                 return back()->with('error', 'Credenciales incorrectas');
             }
