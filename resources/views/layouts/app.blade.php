@@ -124,6 +124,17 @@
                 <span>Partidos Políticos</span>
             </a>
         </li><!-- End Profile Page Nav -->
+            <a class="nav-link collapsed" href="{{ route('political-parties.index') }}">
+                <i class="fa-sharp fa-solid fa-handshake"></i>
+                <span>Partidos Políticos</span>
+            </a>
+        </li><!-- End Political Parties Page Nav -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{ route('departments.index') }}">
+                <i class="fa-sharp fa-solid fa-map-location-dot"></i>
+                <span>Departamentos</span>
+            </a>
+        </li><!-- End Departments Page Nav -->
     </ul>
 </aside><!-- End Sidebar-->
 <main id="main" class="main">
@@ -192,6 +203,7 @@
 
 <script>
     function destroy(route) {
+        console.log(route)
         Swal.fire({
             title: '¿Está seguro de eliminar este registro?',
             text: "Esta acción no se puede revertir",

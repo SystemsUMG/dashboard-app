@@ -44,5 +44,10 @@ Route::middleware('auth')
     Route::get('voters-list', [VoterController::class, 'list'])->name('voters-list');
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::resource('political-parties', PoliticalPartieController::class);
+    Route::get('parties-list', [PoliticalPartieController::class, 'list'])->name('political.parties.list');
+    Route::resource('departments', DepartmentController::class);
+    Route::get('departments-list', [DepartmentController::class, 'list'])->name('departments.list');
+
     });
 
