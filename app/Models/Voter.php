@@ -18,4 +18,9 @@ class Voter extends Model
         'cui',
         'municipality_id',
     ];
+
+    public function municipality(): HasOne
+    {
+        return $this->hasOne(Municipality::class, 'id', 'municipality_id');
+    }
 }

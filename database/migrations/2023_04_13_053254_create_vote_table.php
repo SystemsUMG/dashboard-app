@@ -13,13 +13,11 @@ return new class extends Migration
     {
         Schema::create('votes', function (Blueprint $table) {
             $table->id();
-            $table->integer('type');
             $table->unsignedBigInteger('voter_id');
-            $table->unsignedBigInteger('payroll_id');
+            $table->unsignedBigInteger('political_party_id');
             $table->timestamps();
-            $table->foreign('voter_id')->references('id')->on('payrolls');
-            $table->foreign('payroll_id')->references('id')->on('voters');
-
+            $table->foreign('voter_id')->references('id')->on('voters');
+            $table->foreign('political_party_id')->references('id')->on('political_parties');
         });
     }
 

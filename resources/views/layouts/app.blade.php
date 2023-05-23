@@ -10,8 +10,8 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Logo_del_Tribunal_Supremo_Electoral_de_Guatemala.svg/1200px-Logo_del_Tribunal_Supremo_Electoral_de_Guatemala.svg.png" rel="icon">
+    <link href="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Logo_del_Tribunal_Supremo_Electoral_de_Guatemala.svg/1200px-Logo_del_Tribunal_Supremo_Electoral_de_Guatemala.svg.png" rel="apple-touch-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
@@ -26,9 +26,8 @@
     <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
     <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
     <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.13.2/b-2.3.4/b-colvis-2.3.4/b-html5-2.3.4/r-2.4.0/datatables.min.css"/>
-
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.1/spectrum.min.css">
 
 
     <!-- Template Main CSS File -->
@@ -40,6 +39,13 @@
     * Author: BootstrapMade.com
     * License: https://bootstrapmade.com/license/
     ======================================================== -->
+    <style>
+        .circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+    </style>
 </head>
 
 <body>
@@ -76,18 +82,11 @@
             <li class="nav-item dropdown pe-3">
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                    <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                    <img src="assets/img/profile.png" alt="Profile" class="rounded-circle">
                     <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->name }} &nbsp;</span>
                 </a><!-- End Profile Iamge Icon -->
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                    <li class="dropdown-header">
-                        <span>Web Designer</span>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
                     <li>
                         <a class="dropdown-item d-flex align-items-center"  href="#" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -113,44 +112,30 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link collapsed " href="{{ route('home') }}">
+            <a class="nav-link collapsed " href="{{ route('main.index') }}">
                 <i class="fa-solid fa-chart-line"></i>
-                <span>Dashboard</span>
+                <span>Inicio</span>
             </a>
         </li><!-- End Dashboard Nav -->
-        <li class="nav-heading">Usuarios</li>
+        <li class="nav-heading">Partidos políticos</li>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ route('users.index') }}">
-                <i class="fa-solid fa-users"></i>
-                <span>Lista</span>
-            </a>
-        </li><!-- End Profile Page Nav -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ route('user-types.index') }}">
+            <a class="nav-link collapsed" href="{{ route('political-parties.index') }}">
                 <i class="fa-solid fa-user-gear"></i>
-                <span>Tipos</span>
-            </a>
-        </li><!-- End Profile Page Nav -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ route('voters.index') }}">
-                <i class="fa-solid fa-users-line"></i>
-                <span>Votantes</span>
+                <span>Partidos Políticos</span>
             </a>
         </li><!-- End Profile Page Nav -->
     </ul>
-
 </aside><!-- End Sidebar-->
-
 <main id="main" class="main">
     @yield('content')
 </main><!-- End #main -->
 
-{{--<!-- ======= Footer ======= -->--}}
-{{--<footer id="footer" class="footer">--}}
-{{--    <div class="copyright">--}}
-{{--        &copy; Copyright <strong><span>Fredy Xalín</span></strong>. Todos los derechos reservados--}}
-{{--    </div>--}}
-{{--</footer><!-- End Footer -->--}}
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy; Copyright Todos los derechos reservados
+    </div>
+</footer><!-- End Footer -->
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 <!-- Vendor JS Files -->
@@ -159,13 +144,14 @@
 <script src="assets/vendor/chart.js/chart.umd.js"></script>
 <script src="assets/vendor/echarts/echarts.min.js"></script>
 <script src="assets/vendor/quill/quill.min.js"></script>
-<script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
 <script src="assets/vendor/tinymce/tinymce.min.js"></script>
 <script src="assets/vendor/php-email-form/validate.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/jszip-2.5.0/dt-1.13.2/b-2.3.4/b-colvis-2.3.4/b-html5-2.3.4/r-2.4.0/datatables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.1/spectrum.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
     const Toast = Swal.mixin({

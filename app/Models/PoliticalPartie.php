@@ -5,17 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserType extends Model
+class PoliticalPartie extends Model
 {
     use HasFactory;
 
+    protected $table = 'political_parties';
     protected $fillable = [
-        'description',
+        'name',
+        'color',
+        'image',
         'active',
     ];
 
-    public function users()
-    {
-        $this->hasMany(User::class);
-    }
 }
